@@ -45,6 +45,66 @@
 1) Произвела подготовку данных для работы с алгоритмом линейной регрессии. Установила 10 видов данных случайным образом в линейной зависимости;
 2) Определила связанные функции: функцию модели, функцию потерь, функцию оптимизации.
 3) Выполнила шаги 1-6 (скриншоты в папке 'задание2'). Из скриншотов заметна прямая зависимость между увеличением значения параметра и точностью графика. При низких значениях параметра график случайным образом отклоняется от точек.
+```py
+import numpy as np
+import matplotlib.pyplot as  plt
+%matplotlib inline
+
+x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+x = np.array(x)
+y = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+y = np.array(y)
+
+# 3 Step 1.1
+#Initialize parameters and display
+a = np.random.rand(1)
+print(a)
+b = np.random.rand(1)
+print(b)
+Lr = 0.000001
+
+# The basic linear regression model is wx+b, and since this is a two-dimensional space, the model is ax+b
+# модель линейной регрессии
+def model(a, b, x):
+  return a * x + b
+
+# Take most commonly used loss function of linear regression model is the loss function of mean variance difference
+# возьмем самую простую в использовании модель функцию линейной регрессии
+def loss_function(a, b, x, y):
+  num = len(x)
+  prediction = model(a, b, x)
+  return (0.5 / num) * (np.square(prediction - y)).sum()
+
+# The optimization function mainly USES partial derivatives to update twj parameters a and b
+def optimize(a, b, x, y):
+  num = len(x)
+  prediction = model(a, b, x)
+  # Update the values of A and B by finding the partial derivatives of the loss function on a and b
+  da = (1.0 / num) * ((prediction - y) * x).sum()
+  db = (1.0 / num) * (prediction - y).sum()
+  a = a - Lr * da
+  b = b - Lr * db
+  return a, b
+
+# iterated function, return a and b
+def iterate (a, b, x, y, times):
+  for i in range(times):
+    a, b = optimize(a, b, x, y)
+  return a, b
+
+
+# 3 Step 1.2
+#For the first iteration, the parameter values, losses, and visualization after the iteration are displayed
+a, b = iterate(a, b, x, y, 10000)
+prediction = model(a, b, x)
+loss = loss_function(a, b, x, y)
+print(a, b, loss, Lr)
+plt.scatter(x,y)
+plt.plot(x,prediction)
+
+
+plt.scatter(x, y)
+```
 
 ### Задание 3
 
